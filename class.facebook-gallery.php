@@ -42,7 +42,7 @@ class FBGallery
 			curl_setopt($ch, CURLOPT_HEADER,0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 			$return_data = curl_exec($ch);
-			$json_array = json_decode($return_data,true);
+			$json_array = json_decode(preg_replace('/([^\\\])":([0-9]{10,})(,|})/', '$1":"$2"$3',$return_data),true);
 			
 			return $json_array;
 		}
@@ -179,7 +179,7 @@ class FBGallery
 		curl_setopt($ch, CURLOPT_HEADER,0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
 		$return_data = curl_exec($ch);
-		$json_array = json_decode($return_data,true);
+		$json_array = json_decode(preg_replace('/([^\\\])":([0-9]{10,})(,|})/', '$1":"$2"$3',$return_data),true);
 		
 		if(isset($json_array['data'][0]['page_id'])){return $json_array['data'][0]['page_id'];}
 		else{die('invalid page id or name');}
